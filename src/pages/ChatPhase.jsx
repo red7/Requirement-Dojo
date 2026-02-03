@@ -8,7 +8,6 @@ export default function ChatPhase() {
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
-  const [useRealAPI, setUseRealAPI] = useState(true) // 切换真实 API / 模拟模式
   const messagesEndRef = useRef(null)
 
   useEffect(() => {
@@ -34,32 +33,21 @@ export default function ChatPhase() {
     setIsLoading(true)
 
     try {
-      let aiReply
-
-      if (useRealAPI) {
-        // 使用真实的 DeepSeek API
-        aiReply = await sendChatMessage(
-          userMessage,
-          selectedPersona,
-          selectedIndustry,
-          messages
-        )
-      } else {
-        // 使用模拟响应（用于本地测试）
-        await new Promise(resolve => setTimeout(resolve, 1000))
-        aiReply = getMockResponse(selectedPersona)
-      }
-
+      // 使用真实的 DeepSeek API
+      const aiReply = await sendChatMessage(
+        userMessage,
+        selectedPersona,
+        selectedIndustry,
+        messages
+      )
       addMessage({ role: 'assistant', content: aiReply })
     } catch (err) {
       console.error('发送消息失败:', err)
       setError(err.message)
 
       // 如果 API 失败，回退到模拟模式
-      if (useRealAPI) {
-        const fallbackResponse = getMockResponse(selectedPersona)
-        addMessage({ role: 'assistant', content: fallbackResponse })
-      }
+      const fallbackResponse = getMockResponse(selectedPersona)
+      addMessage({ role: 'assistant', content: fallbackResponse })
     } finally {
       setIsLoading(false)
     }
@@ -156,16 +144,10 @@ export default function ChatPhase() {
             </button>
           </div>
 
-          <div className="flex items-center justify-between mt-2">
+          <div className="mt-2">
             <p className="text-xs text-gray-500 dark:text-gray-400">
               💡 提示：尝试问一些结构化的问题，比如"具体的流程是什么"、"遇到异常情况怎么办"等
             </p>
-            <button
-              onClick={() => setUseRealAPI(!useRealAPI)}
-              className="text-xs px-2 py-1 rounded bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600"
-            >
-              {useRealAPI ? '🤖 真实 API' : '🎭 模拟模式'}
-            </button>
           </div>
         </div>
       </div>
