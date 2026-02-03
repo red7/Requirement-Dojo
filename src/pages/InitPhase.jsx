@@ -1,8 +1,12 @@
-import { Briefcase, User, ArrowRight } from 'lucide-react'
+import { useState } from 'react'
+import { Briefcase, User, ArrowRight, Edit2, Trash2, Award } from 'lucide-react'
 import useAppStore, { INDUSTRIES, PERSONAS, PHASES } from '../stores/useAppStore'
 
 export default function InitPhase() {
-  const { selectedIndustry, selectedPersona, setIndustry, setPersona, setPhase, setTaskBackground } = useAppStore()
+  const { selectedIndustry, selectedPersona, userName, history, setIndustry, setPersona, setPhase, setTaskBackground, setUserName, deleteRecord, clearHistory } = useAppStore()
+  const [showNameEdit, setShowNameEdit] = useState(!userName)
+  const [nameInput, setNameInput] = useState(userName)
+  const [showHistory, setShowHistory] = useState(false)
 
   const handleStart = () => {
     if (selectedIndustry && selectedPersona) {
@@ -19,6 +23,45 @@ export default function InitPhase() {
     }
   }
 
+  const handleSaveName = () => {
+    if (nameInput.trim()) {
+      setUserName(nameInput.trim())
+      setShowNameEdit(false)
+    }
+  }
+
+  const handleDeleteRecord = (id) => {
+    if (confirm('确定要删除这条训练记录吗？')) {
+      deleteRecord(id)
+    }
+  }
+
+  const handleClearHistory = () => {
+    if (confirm('确定要清空所有历史记录吗？此操作不可恢复。')) {
+      clearHistory()
+    }
+  }
+
+  const formatDate = (isoString) => {
+    const date = new Date(isoString)
+    return date.toLocaleDateString('zh-CN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
+  }
+
+  const getIndustryLabel = (id) => {
+    return INDUSTRIES.find(i => i.id === id)?.label || id
+  }
+
+  const getPersonaLabel = (id) => {
+    return PERSONAS.find(p => p.id === id)?.label || id
+  }
+
+  const getScoreColor = (score) => {
+    if (score >= 80) return 'text-green-600 dark:text-green-400'
+    if (score >= 60) return 'text-blue-600 dark:text-blue-400'
+    if (score >= 40) return 'text-yellow-600 dark:text-yellow-400'
+    return 'text-red-600 dark:text-red-400'
+  }
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gray-50 dark:bg-gray-900">
       <div className="max-w-4xl w-full">
@@ -31,6 +74,97 @@ export default function InitPhase() {
             在实战中磨练你的需求洞察力
           </p>
         </div>
+
+        {/* 用户昵称 */}
+        <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 mb-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <User className="w-5 h-5 text-gray-400" />
+              {showNameEdit ? (
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={nameInput}
+                    onChange={(e) => setNameInput(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && handleSaveName()}
+                    placeholder="请输入你的昵称"
+                    className="px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                  <button
+                    onClick={handleSaveName}
+                    className="px-3 py-1.5 bg-primary text-white rounded-lg text-sm hover:bg-primary/90"
+                  >
+                    保存
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <span className="text-gray-900 dark:text-white font-medium">
+                    {userName || '学员'}
+                  </span>
+                  <button
+                    onClick={() => setShowNameEdit(true)}
+                    className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                  >
+                    <Edit2 className="w-4 h-4" />
+                  </button>
+                </>
+              )}
+            </div>
+            {history.length > 0 && (
+              <button
+                onClick={() => setShowHistory(!showHistory)}
+                className="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+              >
+                <Award className="w-4 h-4" />
+                历史记录 ({history.length})
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* 历史记录列表 */}
+        {showHistory && history.length > 0 && (
+          <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">训练历史</h3>
+              <button
+                onClick={handleClearHistory}
+                className="text-xs text-red-600 hover:text-red-700 dark:text-red-400"
+              >
+                清空全部
+              </button>
+            </div>
+            <div className="space-y-2 max-h-64 overflow-y-auto">
+              {history.map((record) => (
+                <div
+                  key={record.id}
+                  className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-750 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >
+                  <div className="flex items-center gap-4 flex-1">
+                    <div className={`text-2xl font-bold ${getScoreColor(record.averageScore)}`}>
+                      {record.averageScore}
+                    </div>
+                    <div className="flex-1">
+                      <div className="text-sm font-medium text-gray-900 dark:text-white">
+                        {getIndustryLabel(record.industry)} · {getPersonaLabel(record.persona)}
+                      </div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">
+                        {formatDate(record.date)} · {record.userName} · {record.messageCount} 条对话
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => handleDeleteRecord(record.id)}
+                    className="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Industry Selection */}
         <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 mb-6">

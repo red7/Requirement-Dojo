@@ -5,13 +5,14 @@ import useAppStore, { PHASES } from '../stores/useAppStore'
 import { submitForReview } from '../utils/api'
 
 export default function ReviewPhase() {
-  const { messages, documentContent, designSolution, aiIntegration, reviewScores, setReviewScores, reset } = useAppStore()
+  const { messages, documentContent, designSolution, aiIntegration, reviewScores, setReviewScores, saveTrainingRecord, reset } = useAppStore()
   const [showRadar, setShowRadar] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [feedback, setFeedback] = useState(null)
   const [suggestions, setSuggestions] = useState([])
   const [overall, setOverall] = useState('')
   const [useRealAPI, setUseRealAPI] = useState(true)
+  const [recordSaved, setRecordSaved] = useState(false)
 
   useEffect(() => {
     const fetchReview = async () => {
@@ -72,6 +73,14 @@ export default function ReviewPhase() {
 
     fetchReview()
   }, [useRealAPI])
+
+  // 保存训练记录（评审完成后）
+  useEffect(() => {
+    if (reviewScores && !isLoading && !recordSaved) {
+      saveTrainingRecord()
+      setRecordSaved(true)
+    }
+  }, [reviewScores, isLoading, recordSaved, saveTrainingRecord])
 
   const radarData = reviewScores ? [
     { subject: '需求洞察力', A: reviewScores.insight, fullMark: 100 },
