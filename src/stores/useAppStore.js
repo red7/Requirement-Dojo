@@ -17,17 +17,17 @@ export const INDUSTRIES = [
 ]
 
 export const PERSONAS = [
-  { 
-    id: 'beginner', 
-    label: '小白级别', 
-    description: '逻辑清晰，表达完整',
-    difficulty: 1
+  {
+    id: 'beginner',
+    label: '初级难度',
+    description: '适合入门练习，需求提供方逻辑较为清晰，表达比较流畅、完整',
+    difficulty: 2
   },
-  { 
-    id: 'realistic', 
-    label: '职场现实', 
-    description: '表达破碎、带有情绪、存在隐藏约束',
-    difficulty: 3
+  {
+    id: 'realistic',
+    label: '高级难度',
+    description: '面向项目实际情况，业务方表达不流畅，不连贯，有情绪，存在隐藏需求',
+    difficulty: 4
   }
 ]
 
