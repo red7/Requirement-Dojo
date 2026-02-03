@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Send, Copy, ArrowRight, AlertCircle } from 'lucide-react'
+import { Send, Copy, ArrowRight, AlertCircle, ArrowLeft, Home } from 'lucide-react'
 import useAppStore, { PHASES } from '../stores/useAppStore'
 import { sendChatMessage, getMockResponse } from '../utils/api'
 
@@ -57,13 +57,30 @@ export default function ChatPhase() {
     alert('内容已提取到工作台！（将在文档阶段使用）')
   }
 
+  const handleReset = () => {
+    if (confirm('确定要返回首页吗？当前进度将会丢失。')) {
+      const { reset } = useAppStore.getState()
+      reset()
+    }
+  }
+
   return (
     <div className="h-screen flex flex-col">
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
         <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">需求访谈</h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">与业务方深入沟通，挖掘真实需求</p>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={handleReset}
+              className="flex items-center gap-2 px-3 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+            >
+              <Home className="w-4 h-4" />
+              <span className="text-sm">返回首页</span>
+            </button>
+            <div className="h-6 w-px bg-gray-300 dark:bg-gray-600"></div>
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">需求访谈</h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400">与业务方深入沟通，挖掘真实需求</p>
+            </div>
           </div>
           <button
             onClick={() => setPhase(PHASES.DOCUMENTING)}

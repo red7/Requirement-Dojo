@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowRight, MessageSquare } from 'lucide-react'
+import { ArrowRight, MessageSquare, ArrowLeft, Home } from 'lucide-react'
 import useAppStore, { PHASES } from '../stores/useAppStore'
 
 export default function DocumentingPhase() {
@@ -15,6 +15,13 @@ export default function DocumentingPhase() {
       coreFeatures: coreFeatures.split('\n').filter(f => f.trim())
     })
     setPhase(PHASES.DESIGN)
+  }
+
+  const handleReset = () => {
+    if (confirm('确定要返回首页吗？当前进度将会丢失。')) {
+      const { reset } = useAppStore.getState()
+      reset()
+    }
   }
 
   return (
@@ -43,7 +50,24 @@ export default function DocumentingPhase() {
       <div className="w-1/2 flex flex-col">
         <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">需求文档编写</h2>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => setPhase(PHASES.CHAT)}
+                className="flex items-center gap-2 px-3 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span className="text-sm">返回访谈</span>
+              </button>
+              <button
+                onClick={handleReset}
+                className="flex items-center gap-2 px-3 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+              >
+                <Home className="w-4 h-4" />
+                <span className="text-sm">返回首页</span>
+              </button>
+              <div className="h-6 w-px bg-gray-300 dark:bg-gray-600"></div>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">需求文档编写</h2>
+            </div>
             <button
               onClick={handleSave}
               className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowRight, Sparkles } from 'lucide-react'
+import { ArrowRight, Sparkles, ArrowLeft, Home } from 'lucide-react'
 import useAppStore, { PHASES } from '../stores/useAppStore'
 
 export default function DesignPhase() {
@@ -15,13 +15,37 @@ export default function DesignPhase() {
     }
   }
 
+  const handleReset = () => {
+    if (confirm('确定要返回首页吗？当前进度将会丢失。')) {
+      const { reset } = useAppStore.getState()
+      reset()
+    }
+  }
+
   return (
     <div className="h-screen flex flex-col">
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
         <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">方案设计与 AI 创新</h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">提交你的最终功能设计方案</p>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setPhase(PHASES.DOCUMENTING)}
+              className="flex items-center gap-2 px-3 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span className="text-sm">返回文档</span>
+            </button>
+            <button
+              onClick={handleReset}
+              className="flex items-center gap-2 px-3 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+            >
+              <Home className="w-4 h-4" />
+              <span className="text-sm">返回首页</span>
+            </button>
+            <div className="h-6 w-px bg-gray-300 dark:bg-gray-600"></div>
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">方案设计与 AI 创新</h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400">提交你的最终功能设计方案</p>
+            </div>
           </div>
           <button
             onClick={handleSubmit}

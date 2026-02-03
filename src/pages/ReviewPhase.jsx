@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend, ResponsiveContainer } from 'recharts'
-import { RotateCcw, Lightbulb, Loader } from 'lucide-react'
+import { RotateCcw, Lightbulb, Loader, ArrowLeft, Home } from 'lucide-react'
 import useAppStore, { PHASES } from '../stores/useAppStore'
 import { submitForReview } from '../utils/api'
 
@@ -97,6 +97,33 @@ export default function ReviewPhase() {
   return (
     <div className="min-h-screen p-6">
       <div className="max-w-6xl mx-auto">
+        {/* Header with navigation */}
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setPhase(PHASES.DESIGN)}
+              className="flex items-center gap-2 px-3 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span className="text-sm">返回方案</span>
+            </button>
+            <button
+              onClick={reset}
+              className="flex items-center gap-2 px-3 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+            >
+              <Home className="w-4 h-4" />
+              <span className="text-sm">返回首页</span>
+            </button>
+          </div>
+          <button
+            onClick={reset}
+            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
+          >
+            <RotateCcw className="w-4 h-4" />
+            重新开始
+          </button>
+        </div>
+
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">五维能力复盘</h1>
           <p className="text-gray-600 dark:text-gray-400">综合评估你的需求分析能力</p>
