@@ -480,27 +480,6 @@ async function onRequestOptions(context) {
 }
 __name(onRequestOptions, "onRequestOptions");
 __name2(onRequestOptions, "onRequestOptions");
-async function onRequestGet(context) {
-  const DATABASE_URL = context.env.DATABASE_URL;
-  const value = await context.env.MY_KV.get("key");
-  const results = await context.env.DB.prepare(
-    "SELECT * FROM users WHERE id = ?"
-  ).bind(1).all();
-  const apiResponse = await fetch("https://api.example.com/data", {
-    headers: {
-      "Authorization": `Bearer ${context.env.API_KEY}`
-    }
-  });
-  return new Response(JSON.stringify({
-    kv: value,
-    database: results,
-    external: await apiResponse.json()
-  }), {
-    headers: { "Content-Type": "application/json" }
-  });
-}
-__name(onRequestGet, "onRequestGet");
-__name2(onRequestGet, "onRequestGet");
 async function onRequestPost2(context) {
   try {
     const { messages, documentContent, designSolution, aiIntegration } = await context.request.json();
@@ -650,29 +629,6 @@ async function onRequestOptions2(context) {
 }
 __name(onRequestOptions2, "onRequestOptions2");
 __name2(onRequestOptions2, "onRequestOptions");
-async function onRequest(context) {
-  return new Response("Hello from Cloudflare Pages Functions!", {
-    headers: { "Content-Type": "text/plain" }
-  });
-}
-__name(onRequest, "onRequest");
-__name2(onRequest, "onRequest");
-async function onRequestGet2(context) {
-  return new Response("GET request");
-}
-__name(onRequestGet2, "onRequestGet2");
-__name2(onRequestGet2, "onRequestGet");
-async function onRequestPost3(context) {
-  const body = await context.request.json();
-  return new Response(JSON.stringify({
-    message: "POST received",
-    data: body
-  }), {
-    headers: { "Content-Type": "application/json" }
-  });
-}
-__name(onRequestPost3, "onRequestPost3");
-__name2(onRequestPost3, "onRequestPost");
 var routes = [
   {
     routePath: "/api/chat",
@@ -689,13 +645,6 @@ var routes = [
     modules: [onRequestPost]
   },
   {
-    routePath: "/api/database",
-    mountPath: "/api",
-    method: "GET",
-    middlewares: [],
-    modules: [onRequestGet]
-  },
-  {
     routePath: "/api/review",
     mountPath: "/api",
     method: "OPTIONS",
@@ -708,27 +657,6 @@ var routes = [
     method: "POST",
     middlewares: [],
     modules: [onRequestPost2]
-  },
-  {
-    routePath: "/hello",
-    mountPath: "/",
-    method: "GET",
-    middlewares: [],
-    modules: [onRequestGet2]
-  },
-  {
-    routePath: "/hello",
-    mountPath: "/",
-    method: "POST",
-    middlewares: [],
-    modules: [onRequestPost3]
-  },
-  {
-    routePath: "/hello",
-    mountPath: "/",
-    method: "",
-    middlewares: [],
-    modules: [onRequest]
   }
 ];
 function lexer(str) {

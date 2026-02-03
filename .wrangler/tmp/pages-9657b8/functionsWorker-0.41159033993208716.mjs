@@ -1,7 +1,7 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 
-// ../.wrangler/tmp/bundle-QuM23O/strip-cf-connecting-ip-header.js
+// ../.wrangler/tmp/bundle-yrvV7c/strip-cf-connecting-ip-header.js
 function stripCfConnectingIPHeader(input, init) {
   const request = new Request(input, init);
   request.headers.delete("CF-Connecting-IP");
@@ -463,28 +463,6 @@ async function onRequestOptions(context) {
 }
 __name(onRequestOptions, "onRequestOptions");
 
-// api/database.js
-async function onRequestGet(context) {
-  const DATABASE_URL = context.env.DATABASE_URL;
-  const value = await context.env.MY_KV.get("key");
-  const results = await context.env.DB.prepare(
-    "SELECT * FROM users WHERE id = ?"
-  ).bind(1).all();
-  const apiResponse = await fetch("https://api.example.com/data", {
-    headers: {
-      "Authorization": `Bearer ${context.env.API_KEY}`
-    }
-  });
-  return new Response(JSON.stringify({
-    kv: value,
-    database: results,
-    external: await apiResponse.json()
-  }), {
-    headers: { "Content-Type": "application/json" }
-  });
-}
-__name(onRequestGet, "onRequestGet");
-
 // api/review.js
 async function onRequestPost2(context) {
   try {
@@ -634,28 +612,6 @@ async function onRequestOptions2(context) {
 }
 __name(onRequestOptions2, "onRequestOptions");
 
-// hello.js
-async function onRequest(context) {
-  return new Response("Hello from Cloudflare Pages Functions!", {
-    headers: { "Content-Type": "text/plain" }
-  });
-}
-__name(onRequest, "onRequest");
-async function onRequestGet2(context) {
-  return new Response("GET request");
-}
-__name(onRequestGet2, "onRequestGet");
-async function onRequestPost3(context) {
-  const body = await context.request.json();
-  return new Response(JSON.stringify({
-    message: "POST received",
-    data: body
-  }), {
-    headers: { "Content-Type": "application/json" }
-  });
-}
-__name(onRequestPost3, "onRequestPost");
-
 // ../.wrangler/tmp/pages-9657b8/functionsRoutes-0.7108346417991069.mjs
 var routes = [
   {
@@ -673,13 +629,6 @@ var routes = [
     modules: [onRequestPost]
   },
   {
-    routePath: "/api/database",
-    mountPath: "/api",
-    method: "GET",
-    middlewares: [],
-    modules: [onRequestGet]
-  },
-  {
     routePath: "/api/review",
     mountPath: "/api",
     method: "OPTIONS",
@@ -692,27 +641,6 @@ var routes = [
     method: "POST",
     middlewares: [],
     modules: [onRequestPost2]
-  },
-  {
-    routePath: "/hello",
-    mountPath: "/",
-    method: "GET",
-    middlewares: [],
-    modules: [onRequestGet2]
-  },
-  {
-    routePath: "/hello",
-    mountPath: "/",
-    method: "POST",
-    middlewares: [],
-    modules: [onRequestPost3]
-  },
-  {
-    routePath: "/hello",
-    mountPath: "/",
-    method: "",
-    middlewares: [],
-    modules: [onRequest]
   }
 ];
 
@@ -1203,7 +1131,7 @@ var jsonError = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx)
 }, "jsonError");
 var middleware_miniflare3_json_error_default = jsonError;
 
-// ../.wrangler/tmp/bundle-QuM23O/middleware-insertion-facade.js
+// ../.wrangler/tmp/bundle-yrvV7c/middleware-insertion-facade.js
 var __INTERNAL_WRANGLER_MIDDLEWARE__ = [
   middleware_ensure_req_body_drained_default,
   middleware_miniflare3_json_error_default
@@ -1235,7 +1163,7 @@ function __facade_invoke__(request, env, ctx, dispatch, finalMiddleware) {
 }
 __name(__facade_invoke__, "__facade_invoke__");
 
-// ../.wrangler/tmp/bundle-QuM23O/middleware-loader.entry.ts
+// ../.wrangler/tmp/bundle-yrvV7c/middleware-loader.entry.ts
 var __Facade_ScheduledController__ = class {
   constructor(scheduledTime, cron, noRetry) {
     this.scheduledTime = scheduledTime;
