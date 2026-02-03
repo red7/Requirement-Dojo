@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Send, Copy, ArrowRight, AlertCircle, ArrowLeft, Home } from 'lucide-react'
+import { Send, ArrowRight, AlertCircle, ArrowLeft, Home } from 'lucide-react'
 import useAppStore, { PHASES } from '../stores/useAppStore'
 import { sendChatMessage, getMockResponse } from '../utils/api'
 
@@ -53,10 +53,6 @@ export default function ChatPhase() {
     }
   }
 
-  const extractToWorkspace = (content) => {
-    alert('内容已提取到工作台！（将在文档阶段使用）')
-  }
-
   const handleReset = () => {
     if (confirm('确定要返回首页吗？当前进度将会丢失。')) {
       const { reset } = useAppStore.getState()
@@ -107,15 +103,6 @@ export default function ChatPhase() {
                 }`}
               >
                 <p className="whitespace-pre-wrap">{message.content}</p>
-                {message.role === 'assistant' && (
-                  <button
-                    onClick={() => extractToWorkspace(message.content)}
-                    className="mt-2 text-xs flex items-center gap-1 opacity-70 hover:opacity-100 transition-opacity"
-                  >
-                    <Copy className="w-3 h-3" />
-                    提取到工作台
-                  </button>
-                )}
               </div>
             </div>
           ))}
