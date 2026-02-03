@@ -8,4 +8,4 @@ dist
 .dev.vars
 .vercel
 .cache
-wrangler.toml
+.wrangler
