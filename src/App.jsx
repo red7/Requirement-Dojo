@@ -16,6 +16,26 @@ function App() {
     }
   }, [])
 
+  // 百度统计 - 追踪训练阶段切换
+  useEffect(() => {
+    if (window._hmt) {
+      const phaseNames = {
+        [PHASES.INIT]: '/init',
+        [PHASES.CHAT]: '/chat',
+        [PHASES.DOCUMENTING]: '/documenting',
+        [PHASES.DESIGN]: '/design',
+        [PHASES.REVIEW]: '/review'
+      }
+
+      const virtualPath = phaseNames[currentPhase] || '/'
+
+      // 发送虚拟页面浏览到百度统计
+      window._hmt.push(['_trackPageview', virtualPath])
+
+      console.log('📊 百度统计 - 虚拟页面浏览:', virtualPath)
+    }
+  }, [currentPhase])
+
   const renderPhase = () => {
     switch (currentPhase) {
       case PHASES.INIT:
