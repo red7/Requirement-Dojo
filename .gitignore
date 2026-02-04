@@ -9,3 +9,17 @@ dist
 .vercel
 .cache
 .wrangler
+
+# 开发文档（包含敏感配置信息）
+Deploy.md
+deploy.md
+DEPLOY.md
+
+# 产品文档（开发参考，不需要公开）
+prd.md
+PRD.md
+
+# 安全文档（可能包含敏感信息）
+Security.md
+SECURITY.md
+security.md
