@@ -12,8 +12,8 @@
 ### 💬 AI 驱动对话
 - **DeepSeek v3.2 模型**：智能、自然的业务人员对话
 - **两种难度模式**：
-  - 小白级别（1星）：逻辑清晰，信息完整
-  - 职场现实（3星）：表达破碎，需要挖掘，包含30%噪音
+  - 初级难度：逻辑清晰，信息完整
+  - 高级难度：表达破碎，需要挖掘，包含噪音信息
 
 ### 📊 五维能力评估
 - 需求洞察力：是否挖掘出隐藏约束？
@@ -24,88 +24,13 @@
 
 ---
 
-## 🚀 快速开始
-
-### 前置要求
-- Node.js 18+
-- npm 或 yarn
-
-### 本地开发
-
-#### 1. 安装依赖
-```bash
-npm install
-```
-
-#### 2. 配置 API Key
-
-创建 `.dev.vars` 文件：
-```bash
-cp .dev.vars.example .dev.vars
-```
-
-编辑 `.dev.vars`，添加你的 DeepSeek API Key：
-```
-DEEPSEEK_API_KEY=sk-your-api-key-here
-```
-
-> **获取 API Key**：访问 [阿里云百炼平台](https://bailian.console.aliyun.com/)
-
-#### 3. 启动开发环境
-
-**选项 A - 仅前端（使用模拟模式）**
-```bash
-npm run dev
-# 访问 http://localhost:5173
-# 在应用中切换到"🎭 模拟模式"
-```
-
-**选项 B - 完整环境（真实 API）**
-```bash
-npm run build
-npx wrangler pages dev dist --live-reload
-# 访问 http://localhost:8788
-```
-
----
-
-## 📦 部署到 Cloudflare Pages
-
-### 1. 推送到 Git 仓库
-```bash
-git add .
-git commit -m "Initial commit"
-git remote add origin https://github.com/your-username/requirement-dojo.git
-git push -u origin main
-```
-
-### 2. 连接 Cloudflare Pages
-1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com/)
-2. 进入 **Pages** → **Create a project**
-3. 连接你的 Git 仓库
-4. 构建配置：
-   - **构建命令**: `npm run build`
-   - **输出目录**: `dist`
-   - **Node 版本**: 18 或更高
-
-### 3. 配置环境变量
-在 Cloudflare Pages 项目设置中：
-- Settings → Environment variables
-- 添加：`DEEPSEEK_API_KEY` = `sk-your-api-key`
-- 环境：Production 和 Preview
-
-### 4. 部署完成 🎉
-访问 `https://your-project.pages.dev`
-
----
-
 ## 🎮 使用指南
 
 ### 训练流程
 
 **Phase 1: 场景初始化**
 - 选择行业（金融/医疗/电商/合规/运动）
-- 选择难度（小白级别/职场现实）
+- 选择难度（初级难度/高级难度）
 
 **Phase 2: 需求访谈**
 - 与 AI 业务人员对话
@@ -149,78 +74,6 @@ git push -u origin main
 2. **挖掘数据** → "能具体说说有多严重吗？"
 3. **追问原因** → "为什么会这样？客户怎么说的？"
 4. **识别约束** → "有规定吗？" "系统情况？" "资源够吗？"
-
----
-
-## 🏗️ 技术栈
-
-- **前端**: Vite + React 18 + Tailwind CSS
-- **状态管理**: Zustand
-- **图表**: Recharts（五维雷达图）
-- **图标**: Lucide React
-- **后端**: Cloudflare Pages Functions
-- **AI**: DeepSeek v3.2（阿里云百炼平台）
-- **部署**: Cloudflare Pages
-
----
-
-## 📊 项目结构
-
-```
-RDojo/
-├── src/
-│   ├── pages/              # 五个阶段页面
-│   │   ├── InitPhase.jsx
-│   │   ├── ChatPhase.jsx
-│   │   ├── DocumentingPhase.jsx
-│   │   ├── DesignPhase.jsx
-│   │   └── ReviewPhase.jsx
-│   ├── stores/             # Zustand 状态管理
-│   └── utils/              # API 调用工具
-├── functions/              # Cloudflare Functions（后端）
-│   └── api/
-│       ├── chat.js         # 对话 API
-│       ├── review.js       # 评审 API
-│       └── scenarioPrompts.js  # 场景配置
-├── dist/                   # 构建输出目录
-└── package.json
-```
-
----
-
-## 💰 成本估算
-
-使用 DeepSeek v3.2 API：
-- 输入：¥0.001 / 1K tokens
-- 输出：¥0.002 / 1K tokens
-
-**示例成本**：
-- 单次对话：约 ¥0.001
-- 单次评审：约 ¥0.004
-- 每天 100 人完整流程：约 ¥1.26/天
-- **月成本：约 ¥38**（非常便宜！）
-
-Cloudflare Pages：
-- 免费额度：100,000 次请求/天
-- 超出部分：$0.50/百万请求
-
----
-
-## 🔒 安全性
-
-- ✅ API Key 存储在环境变量中
-- ✅ 前端代码不包含敏感信息
-- ✅ Cloudflare Functions 保护 API Key
-- ✅ `.dev.vars` 已在 `.gitignore` 中
-
----
-
-## 📚 文档
-
-- `SCENARIO_PROMPTS.md` - 场景 Prompt 系统详细说明
-- `DEEPSEEK_INTEGRATION.md` - DeepSeek API 集成指南
-- `SECURITY.md` - 安全配置指南
-- `CLOUDFLARE_FUNCTIONS.md` - Cloudflare Functions 完整指南
 
 ---
 
@@ -268,13 +121,6 @@ MIT License
 - [Cloudflare Pages](https://pages.cloudflare.com/) - 免费的全球部署
 - [Vite](https://vitejs.dev/) - 快速的构建工具
 - [Recharts](https://recharts.org/) - 优秀的图表库
-
----
-
-## 📞 联系方式
-
-如有问题或建议，欢迎通过以下方式联系：
-- GitHub Issues: [提交 Issue](https://github.com/your-username/requirement-dojo/issues)
 
 ---
 
