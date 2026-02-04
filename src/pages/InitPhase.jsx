@@ -1,12 +1,37 @@
 import { useState } from 'react'
-import { Briefcase, User, ArrowRight, Edit2, Trash2, Award, ChevronDown } from 'lucide-react'
+import { Briefcase, User, ArrowRight, Edit2, Trash2, Award, ChevronDown, MessageCircle, FileText, Lightbulb, Sparkles, BarChart3 } from 'lucide-react'
 import useAppStore, { INDUSTRIES, PERSONAS, PHASES, TRAINING_STEPS } from '../stores/useAppStore'
 
 export default function InitPhase() {
-  const { selectedIndustry, selectedPersona, userName, history, setIndustry, setPersona, setPhase, setTaskBackground, setUserName, deleteRecord, clearHistory } = useAppStore()
+  const { selectedIndustry, selectedPersona, userName, history, currentPhase, setIndustry, setPersona, setPhase, setTaskBackground, setUserName, deleteRecord, clearHistory } = useAppStore()
   const [showNameEdit, setShowNameEdit] = useState(!userName)
   const [nameInput, setNameInput] = useState(userName)
   const [showHistory, setShowHistory] = useState(false)
+
+  // 图标映射
+  const iconMap = {
+    MessageCircle,
+    FileText,
+    Lightbulb,
+    Sparkles,
+    BarChart3
+  }
+
+  const getIcon = (iconName) => {
+    const Icon = iconMap[iconName]
+    return Icon ? <Icon className="w-3.5 h-3.5 md:w-4 md:h-4" /> : null
+  }
+
+  // 获取步骤状态
+  const getStepStatus = (stepId) => {
+    const phaseOrder = ['init', 'chat', 'documenting', 'design', 'ai_integration', 'review']
+    const currentIndex = phaseOrder.indexOf(currentPhase)
+    const stepIndex = phaseOrder.indexOf(stepId)
+
+    if (stepIndex < currentIndex) return 'completed'
+    if (stepIndex === currentIndex) return 'current'
+    return 'upcoming'
+  }
 
   const handleStart = () => {
     if (selectedIndustry && selectedPersona) {
@@ -84,27 +109,52 @@ export default function InitPhase() {
           </p>
         </div>
 
-        {/* 训练流程说明 */}
-        <div className="bg-gradient-to-br from-primary/[0.03] to-primary/[0.06] dark:from-primary/[0.06] dark:to-primary/[0.12] rounded-xl p-3 md:p-4 mb-4 md:mb-5 border border-primary/10">
-          <h3 className="text-xs md:text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 md:mb-3 text-center">
-            训练流程
-          </h3>
-          <div className="flex items-start justify-between relative">
-            {TRAINING_STEPS.map((step, index) => (
-              <div key={step.id} className="flex flex-col items-center flex-1 relative">
-                <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center text-base md:text-xl mb-1 md:mb-1.5 shadow-sm relative z-10">
-                  {step.icon}
-                </div>
-                <div className="text-[11px] md:text-xs font-medium text-gray-900 dark:text-white text-center">
-                  {step.label}
-                </div>
+        {/* 训练流程进度 */}
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-3 md:p-4 mb-4 md:mb-5">
+          <div className="flex items-center justify-between gap-1 md:gap-2">
+            {TRAINING_STEPS.map((step, index) => {
+              const status = getStepStatus(step.id)
+              return (
+                <div key={step.id} className="flex items-center flex-1">
+                  {/* 步骤节点 */}
+                  <div className="flex flex-col items-center flex-1">
+                    <div
+                      className={`
+                        w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center transition-all duration-300 mb-1.5
+                        ${status === 'completed' ? 'bg-primary text-white' : ''}
+                        ${status === 'current' ? 'bg-primary/20 text-primary ring-2 ring-primary ring-offset-2' : ''}
+                        ${status === 'upcoming' ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500' : ''}
+                      `}
+                    >
+                      {status === 'completed' ? (
+                        <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                        </svg>
+                      ) : (
+                        getIcon(step.icon)
+                      )}
+                    </div>
+                    {/* 步骤名称 */}
+                    <div className={`
+                      text-[10px] md:text-xs font-medium text-center transition-colors duration-300
+                      ${status === 'completed' ? 'text-primary' : ''}
+                      ${status === 'current' ? 'text-primary font-semibold' : ''}
+                      ${status === 'upcoming' ? 'text-gray-500 dark:text-gray-500' : ''}
+                    `}>
+                      {step.label}
+                    </div>
+                  </div>
 
-                {/* 连接线 */}
-                {index < TRAINING_STEPS.length - 1 && (
-                  <div className="absolute top-4 md:top-5 left-[50%] w-full h-px bg-primary/20 z-0" />
-                )}
-              </div>
-            ))}
+                  {/* 连接线 */}
+                  {index < TRAINING_STEPS.length - 1 && (
+                    <div className={`
+                      h-[2px] w-4 md:w-8 transition-all duration-300 mt-[-20px] md:mt-[-22px]
+                      ${status === 'completed' ? 'bg-primary' : 'bg-gray-200 dark:bg-gray-700'}
+                    `} />
+                  )}
+                </div>
+              )
+            })}
           </div>
         </div>
 

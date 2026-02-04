@@ -5,14 +5,16 @@ export const PHASES = {
   CHAT: 'chat',
   DOCUMENTING: 'documenting',
   DESIGN: 'design',
+  AI_INTEGRATION: 'ai_integration',
   REVIEW: 'review'
 }
 
 export const TRAINING_STEPS = [
-  { id: PHASES.CHAT, label: '需求访谈', icon: '💬', description: '与业务方深入沟通' },
-  { id: PHASES.DOCUMENTING, label: '需求整理', icon: '📝', description: '梳理核心需求' },
-  { id: PHASES.DESIGN, label: '方案设计', icon: '🎨', description: '设计解决方案' },
-  { id: PHASES.REVIEW, label: '五维评分', icon: '📊', description: 'AI 智能评审' }
+  { id: 'chat', label: '需求访谈', icon: 'MessageCircle' },
+  { id: 'documenting', label: '需求分析', icon: 'FileText' },
+  { id: 'design', label: '方案设计', icon: 'Lightbulb' },
+  { id: 'ai_integration', label: 'AI 融合', icon: 'Sparkles' },
+  { id: 'review', label: '训练评分', icon: 'BarChart3' }
 ]
 
 export const INDUSTRIES = [
