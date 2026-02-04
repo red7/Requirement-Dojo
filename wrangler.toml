@@ -1,0 +1,9 @@
+name = "requirement-dojo"
+compatibility_date = "2024-01-01"
+
+[vars]
+DEEPSEEK_API_KEY = "sk-de3f55c616be477fb4658a98d5be4a72"
+
+[[kv_namespaces]]
+binding = "ANALYTICS"
+id = "analytics"

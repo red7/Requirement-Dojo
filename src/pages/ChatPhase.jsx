@@ -11,12 +11,32 @@ export default function ChatPhase() {
   const messagesEndRef = useRef(null)
 
   useEffect(() => {
-    if (messages.length === 0) {
-      addMessage({
-        role: 'assistant',
-        content: `哎呀，最近真的是忙死了...对了，跟你说个事儿。${taskBackground}。你有什么想法吗？`
-      })
+    const initChat = async () => {
+      if (messages.length === 0) {
+        setIsLoading(true)
+        try {
+          // 调用 API 获取 AI 自然开场白
+          const aiReply = await sendChatMessage(
+            '你好，我是来做需求调研的',  // 自然的触发语
+            selectedPersona,
+            selectedIndustry,
+            []
+          )
+          addMessage({ role: 'assistant', content: aiReply })
+        } catch (err) {
+          console.error('初始化对话失败:', err)
+          // 如果失败，回退到简单开场
+          addMessage({
+            role: 'assistant',
+            content: `${taskBackground}你能帮我分析一下吗？`
+          })
+        } finally {
+          setIsLoading(false)
+        }
+      }
     }
+
+    initChat()
   }, [])
 
   useEffect(() => {

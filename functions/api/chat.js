@@ -44,9 +44,11 @@ export async function onRequestPost(context) {
       body: JSON.stringify({
         model: 'deepseek-v3.2',
         messages: messages,
-        temperature: 0.7,
+        temperature: 0.9,  // 提高随机性，让每次回答更不同
         max_tokens: 500,
-        top_p: 0.9
+        top_p: 0.95,
+        presence_penalty: 0.3,  // 增加多样性，避免重复
+        frequency_penalty: 0.3   // 惩罚重复内容
       })
     })
 
