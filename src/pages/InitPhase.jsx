@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Briefcase, User, ArrowRight, Edit2, Trash2, Award, ChevronDown } from 'lucide-react'
-import useAppStore, { INDUSTRIES, PERSONAS, PHASES } from '../stores/useAppStore'
+import useAppStore, { INDUSTRIES, PERSONAS, PHASES, TRAINING_STEPS } from '../stores/useAppStore'
 
 export default function InitPhase() {
   const { selectedIndustry, selectedPersona, userName, history, setIndustry, setPersona, setPhase, setTaskBackground, setUserName, deleteRecord, clearHistory } = useAppStore()
@@ -82,6 +82,30 @@ export default function InitPhase() {
           <p className="text-base md:text-lg text-gray-500 dark:text-gray-400 font-light">
             在实战中磨练你的需求洞察力
           </p>
+        </div>
+
+        {/* 训练流程说明 */}
+        <div className="bg-gradient-to-br from-primary/[0.03] to-primary/[0.06] dark:from-primary/[0.06] dark:to-primary/[0.12] rounded-xl p-3 md:p-4 mb-4 md:mb-5 border border-primary/10">
+          <h3 className="text-xs md:text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 md:mb-3 text-center">
+            训练流程
+          </h3>
+          <div className="flex items-start justify-between relative">
+            {TRAINING_STEPS.map((step, index) => (
+              <div key={step.id} className="flex flex-col items-center flex-1 relative">
+                <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center text-base md:text-xl mb-1 md:mb-1.5 shadow-sm relative z-10">
+                  {step.icon}
+                </div>
+                <div className="text-[11px] md:text-xs font-medium text-gray-900 dark:text-white text-center">
+                  {step.label}
+                </div>
+
+                {/* 连接线 */}
+                {index < TRAINING_STEPS.length - 1 && (
+                  <div className="absolute top-4 md:top-5 left-[50%] w-full h-px bg-primary/20 z-0" />
+                )}
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* 用户昵称 */}
