@@ -5,8 +5,17 @@ export const PHASES = {
   CHAT: 'chat',
   DOCUMENTING: 'documenting',
   DESIGN: 'design',
+  AI_INTEGRATION: 'ai_integration',
   REVIEW: 'review'
 }
+
+export const TRAINING_STEPS = [
+  { id: 'chat', label: '需求访谈', icon: 'MessageCircle' },
+  { id: 'documenting', label: '需求分析', icon: 'FileText' },
+  { id: 'design', label: '方案设计', icon: 'Lightbulb' },
+  { id: 'ai_integration', label: 'AI 融合', icon: 'Sparkles' },
+  { id: 'review', label: '训练评分', icon: 'BarChart3' }
+]
 
 export const INDUSTRIES = [
   { id: 'finance', label: '金融', icon: '💰' },
