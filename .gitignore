@@ -19,6 +19,11 @@ DEPLOY.md
 prd.md
 PRD.md
 
+# 技术集成文档（说明性文档，不是运行依赖）
+SCENARIO_PROMPTS.md
+DEEPSEEK_INTEGRATION.md
+CLOUDFLARE_FUNCTIONS.md
+
 # 安全文档（可能包含敏感信息）
 Security.md
 SECURITY.md
