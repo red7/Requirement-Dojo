@@ -18,8 +18,14 @@
 
 ```bash
 # DeepSeek API Key（阿里云百炼平台）
+# 用途：需求评审评分（推理能力强）
 # 获取地址：https://bailian.console.aliyun.com/
 DEEPSEEK_API_KEY=sk-your-actual-key-here
+
+# Qwen API Key（阿里云百炼平台）
+# 用途：需求访谈对话（角色扮演优化）
+# 获取地址：https://bailian.console.aliyun.com/
+QWEN_API_KEY=sk-your-actual-key-here
 ```
 
 ## 重要提醒

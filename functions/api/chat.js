@@ -1,4 +1,4 @@
-// Cloudflare Pages Function - DeepSeek v3.2 对话 API
+// Cloudflare Pages Function - Qwen-Flash-Character 对话 API
 // 路径: functions/api/chat.js
 
 import { generateScenarioPrompt } from './scenarioPrompts.js'
@@ -8,9 +8,9 @@ export async function onRequestPost(context) {
     const { message, persona, industry, conversationHistory = [] } = await context.request.json()
 
     // 从环境变量获取 API key（安全）
-    const DEEPSEEK_API_KEY = context.env.DEEPSEEK_API_KEY
+    const QWEN_API_KEY = context.env.QWEN_API_KEY
 
-    if (!DEEPSEEK_API_KEY) {
+    if (!QWEN_API_KEY) {
       return new Response(JSON.stringify({
         success: false,
         error: '未配置 API Key'
@@ -34,15 +34,15 @@ export async function onRequestPost(context) {
       { role: 'user', content: message }
     ]
 
-    // 调用阿里云百炼平台 - DeepSeek v3.2 API
+    // 调用阿里云百炼平台 - Qwen-Flash-Character API
     const response = await fetch('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
+        'Authorization': `Bearer ${QWEN_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'deepseek-v3.2',
+        model: 'qwen-flash-character',
         messages: messages,
         temperature: 0.9,  // 提高随机性，让每次回答更不同
         max_tokens: 500,
@@ -54,7 +54,7 @@ export async function onRequestPost(context) {
 
     if (!response.ok) {
       const error = await response.text()
-      console.error('DeepSeek API Error:', error)
+      console.error('Qwen API Error:', error)
       return new Response(JSON.stringify({
         success: false,
         error: `API 调用失败: ${response.status}`
