@@ -172,7 +172,7 @@ export const INDUSTRY_SCENARIOS = {
     painPoints: [
       {
         level: 'surface',
-        template: '患者天天跟我抱怨，说{doctorType}根本挂不上。有的{time}起来守着手机抢号，还是抢不到。有个{description}都来了{times}次了，每次都挂不上，急得直哭',
+        template: '患者天天跟我抱怨，说{doctorType}根本挂不上。有的{time}起来守着手机抢号，还是抢不到。有个{description}都来了{times}次了，每次都挂不上，特别着急',
         params: {
           doctorType: ['专家号', '名医号', '主任号'],
           time: ['凌晨', '大半夜', '早上'],
